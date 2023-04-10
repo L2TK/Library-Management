@@ -4,9 +4,10 @@ class Librarian: public Admin{
 private:
     string role;
 public:
-    Librarian():Admin(){
+    Librarian():Admin(){}
+    Librarian(Library* libPtr):Admin(Library* libPtr){
         role = "Librarian";
-    };
+    }
     string getRole() const override {return "librarian"; }
     void executeMenu() override;
 

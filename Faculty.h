@@ -3,7 +3,8 @@
 
 class Faculty: public User{
 public:    
-    Faculty():User(){
+    Faculty():User(){};
+    Faculty(Library* libPtr):User(Library* libPtr){
         booksBorrowed = new string [15];
         maxNumBooks = 15;
     }

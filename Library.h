@@ -1,3 +1,4 @@
+#pragma once
 #include <Windows.h>
 #include "Supervisor.h"
 #include "Librarian.h"
@@ -14,6 +15,10 @@ class Library{
         Person* personArr[100];
         Book* bookArr[100];
 
+        int numSupervisor;
+        int numLibrarian;
+        int numStudent;
+        int numFaculty;
         int personArrSize;
         int bookArrSize;
 
@@ -34,11 +39,16 @@ class Library{
 
         int getUserArrSize(){ return personArrSize; }
         int getBookArrSize(){ return bookArrSize; }
+        void addLibrarian();
 };
 
 Library::Library(){
     personArrSize = 0;
     bookArrSize = 0;
+    numFaculty = 0;
+    numLibrarian = 0;
+    numSupervisor = 0;
+    numStudent = 0;
     for(int i = 0; i < 100; i++){
         bookArr[i] = nullptr;
     }
@@ -148,47 +158,99 @@ void Library::loadPerson(){
     }
     personArrSize = 0;
     while(ifs >>line){
-            if(line == "supervisor"){
-                p = new Supervisor();
+        if(line == "supervisor"){
+            p = new Supervisor(this);
+            numSupervisor++;
+        }
+        else if(line == "librarian"){
+            p = new Librarian(this);
+            numLibrarian++;
+        }
+        else if(line == "faculty"){
+            p = new Faculty(this);
+            numFaculty++;
+        }
+        else if(line == "student"){
+            p = new Student(this);
+            numStudent++;
+        }
+        ifs >> line;
+        p->setUsername(line);
+        ifs >> line;
+        p->setPassword(line);
+        ifs >> id;
+        p->setID(id);
+        ifs >> line;
+        p->setFirstName(line);
+        ifs >> line;
+        p->setMiddleName(line);
+        ifs >> line;
+        p->setLastName(line);
+        ifs >> line;
+        p->setDateOfBirth(line);
+        if(p->getRole() == "faculty" || p->getRole() == "student"){
+            ifs >> numBook;
+            p->setNumBooksBorrowed(numBook);
+            for(int i = 0; i < numBook; i++){
+                ifs >> bookIndex;
+                p->getBookBorrowed()[i] = bookIndex;
             }
-            else if(line == "librarian"){
-                p = new Librarian();
-            }
-            else if(line == "faculty"){
-                p = new Faculty();
-            }
-            else if(line == "student"){
-                p = new Student();
-            }
-            ifs >> line;
-            p->setUsername(line);
-            ifs >> line;
-            p->setPassword(line);
-            ifs >> id;
-            p->setID(id);
-            ifs >> line;
-            p->setFirstName(line);
-            ifs >> line;
-            p->setMiddleName(line);
-            ifs >> line;
-            p->setLastName(line);
-            ifs >> line;
-            p->setDateOfBirth(line);
-            if(p->getRole() == "faculty" || p->getRole() == "student"){
-                ifs >> numBook;
-                p->setNumBooksBorrowed(numBook);
-                for(int i = 0; i < numBook; i++){
-                    ifs >> bookIndex;
-                    p->getBookBorrowed()[i] = bookIndex;
-                }
-            }
-            personArr[personArrSize] = p;
-            personArrSize++;
-            cout << 1 << endl;
-            ifs.ignore();
+        }
+        personArr[personArrSize] = p;
+        personArrSize++;
+        cout << 1 << endl;
+        ifs.ignore();
     }
 }
         
+void Library::addLibrarian(){
+    int role;
+    if(numLibrarian == 10){
+        cout << "Librarian slot is full." << endl;
+        return;
+    }
+    string input;
+    cout << "-----Add a librarian-----" << endl;
+    cout << "Enter a role: " << endl;
+    cout << "1 - Supervisor " << endl;
+    cout << "2 - Librarian " << endl;
+    cin >> role;
+    if(role == 1){
+        personArr[personArrSize] = new Supervisor(this);
+        numSupervisor++;
+    }
+    else if(role == 2){
+        personArr[personArrSize] = new Librarian(this);
+        numLibrarian++;
+    }
+    cout << "Enter first Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setFirstName(input);
+
+    cout << "Enter middle Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setMiddleName(input);
+
+    cout << "Enter last Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setLastName(input);
+
+    cout << "Enter date of birth (mm-dd-yyy):" << endl;
+    cin >> input;
+    personArr[personArrSize]->setDateOfBirth(input);
+
+    cout << "Enter an username:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setUsername(input);
+
+    cout << "Enter a password:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setPassword(input);
+    
+    int id = rand()%30;
+    personArr[personArrSize]->setID(id);
+    personArrSize++;
+}
 
 
 void Library::loadBooks(){
@@ -219,7 +281,7 @@ void Library::loadBooks(){
 }
 
 void Library::savePerson(){
-    ofstream ofs ("PersonData1.txt");
+    ofstream ofs ("PersonData.txt");
     for(int i = 0; i < personArrSize; i++){
         ofs << personArr[i]->getRole() << endl;
         ofs << personArr[i]->getUsername() << endl;
@@ -233,7 +295,7 @@ void Library::savePerson(){
             ofs << personArr[i]->getNumBookBorrowed() << endl;
             for(int j = 0; j < personArr[i]->getNumBookBorrowed(); j++){
                 ofs << personArr[i]->getBookBorrowed()[j] << endl;
-        }
+            }
         }
         ofs << endl;
     }
@@ -241,7 +303,7 @@ void Library::savePerson(){
 }
 
 void Library::saveBooks(){
-    ofstream ofs("BookData1.txt");
+    ofstream ofs("BookData.txt");
     for(int i = 0; i < bookArrSize; i++){
         ofs << bookArr[i]->index << endl;
         ofs << bookArr[i]->title << endl;

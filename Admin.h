@@ -2,10 +2,9 @@
 #include "Person.h"
 
 class Admin: public Person{
-private:
-    string role;
 public:
-    Admin():Person(){ }
+    Admin():Person(){};
+    Admin(Library* libPtr):Person(Library* libPtr){};
     void setRole(string n){ role = n; }
     void printInfo();
 };

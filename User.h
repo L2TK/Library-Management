@@ -11,7 +11,8 @@ protected:
     int maxNumBooks;
 
 public:
-    User();
+    User():Person(){}
+    User(Library* libPtr);
     void setLateFee(int _lateFee){ lateFee = _lateFee; }
     void setMaxNumBooks(int o){ maxNumBooks = o; }
 
@@ -29,7 +30,7 @@ public:
 
 };
 
-User::User():Person(){
+User::User(Library* libPtr):Person(Library* libPtr){
     numBooksBorrowed = 0;
     lateFee = 0;
     availableSlot = 0;
