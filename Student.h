@@ -5,6 +5,7 @@ class Student: public User{
 public:
     Student():User(){
         maxNumBooks = 5;
+        availableSlot = 5;
         booksBorrowed = new string [5];
     }
     ~Student();

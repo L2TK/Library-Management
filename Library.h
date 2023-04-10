@@ -181,7 +181,7 @@ void Library::librarianExecuteMenu(){
 void Library::userExecuteMenu(){
     int choice =  userPtr->menu();
     if(choice == 1){
-        addUser();
+        borrowBook();
     }
     else if(choice == 2){
         deleteUser();

@@ -29,12 +29,12 @@ public:
 User::User():Person(){
     numBooksBorrowed = 0;
     lateFee = 0;
-    availableSlot = maxNumBooks - numBooksBorrowed;
 }
 
 void User::addBook(string bookIndex){
     booksBorrowed[numBooksBorrowed] = bookIndex;
     numBooksBorrowed++;
+    availableSlot = maxNumBooks - numBooksBorrowed;
 }
 
 void User::printInfo() const {
