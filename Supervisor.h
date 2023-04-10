@@ -10,6 +10,7 @@ public:
     string getRole() const override {return "supervisor"; }
     void printInfo() const override;
     int menu() override;
+    ~Supervisor();
 };
 
 int Supervisor::menu(){
@@ -19,13 +20,13 @@ int Supervisor::menu(){
     cout << "||                                          ||" << endl;
     cout << "||   1 - Add a librarian                    ||" << endl;
     cout << "||   2 - Delete a librarian                 ||" << endl;
-    cout << "||   3 - Add a student                      ||" << endl;
-    cout << "||   4 - Delete a student                   ||" << endl;
+    cout << "||   3 - Add a user                         ||" << endl;
+    cout << "||   4 - Delete a user                      ||" << endl;
     cout << "||   5 - Add a book                         ||" << endl;
     cout << "||   6 - Delete a book                      ||" << endl;
-    cout << "||   7 - Views all librarians               ||" << endl;
-    cout << "||   8 - Views all users                    ||" << endl;
-    cout << "||   9 - Views all books                    ||" << endl;
+    cout << "||   7 - View all librarians                ||" << endl;
+    cout << "||   8 - View all users                     ||" << endl;
+    cout << "||   9 - View all books                     ||" << endl;
     cout << "||   10 - Log out                           ||" << endl;
     cout << "||                                          ||" << endl;
     cout << "**********************************************" << endl;
@@ -37,4 +38,8 @@ int Supervisor::menu(){
 void Supervisor::printInfo() const {
     cout << "Role: Supervisor" << endl;
     Person::printInfo();
+}
+
+Supervisor::~Supervisor(){
+    cout << "Supervisor deleted." << endl;
 }

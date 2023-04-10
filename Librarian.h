@@ -10,17 +10,29 @@ public:
 };
 
 int Librarian::menu(){
-    cout << "Hi, I'm " << getRole() << endl;
-    return 1;
+    int choice;
+    cout << "**********************************************" << endl;
+    cout << "||   Librarian Menu:                        ||" << endl;
+    cout << "||                                          ||" << endl;
+    cout << "||   1 - Add a user                         ||" << endl;
+    cout << "||   2 - Delete a user                      ||" << endl;
+    cout << "||   3 - Add a book                         ||" << endl;
+    cout << "||   4 - Delete a book                      ||" << endl;
+    cout << "||   5 - Views all users                    ||" << endl;
+    cout << "||   6 - Views all books                    ||" << endl;
+    cout << "||   7 - Log out                            ||" << endl;
+    cout << "||                                          ||" << endl;
+    cout << "**********************************************" << endl;
+    cout << "Choose one option:" << endl;
+    cin >> choice;
+    return choice;
 }
 
 void Librarian::printInfo() const {
     cout << "Role: Librarian" << endl;
-    cout << "Name: " <<  firstName << " " << middleName << " " << lastName << endl;
-    cout << "ID: " << ID << endl;
-    cout << "Date of Birth: " << dateOfBirth << endl;
+    Person::printInfo();
 }
 
 Librarian::~Librarian(){
-    cout << "Librarian delete." << endl;
+    cout << "Librarian deleted." << endl;
 }

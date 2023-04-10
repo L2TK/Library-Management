@@ -25,18 +25,6 @@ T.
 Tran
 11-22-2002
 
-student
-sam357
-sam753
-100
-Sam
-X.
-Red
-11-22-1995
-2
-A1
-A2
-
 faculty
 johnny234
 johnny432
@@ -61,3 +49,4 @@ Luffy
 2
 A7
 A9
+

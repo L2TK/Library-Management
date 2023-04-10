@@ -16,6 +16,7 @@ public:
     string getFirstName(){ return firstName; }
     string getMiddleName(){ return middleName; }
     string getLastName(){ return lastName; }
+    string getFullName(){ return firstName + " " + middleName + " " + lastName; }
     string getDateOfBirth(){ return dateOfBirth; }
     string getUsername(){ return username; }
     string getPassword(){ return password; }
@@ -29,13 +30,18 @@ public:
     void setPassword(string _password){ password = _password; }
     void setID(int _ID){ ID = _ID; }
 
+    virtual int getLateFee(){ return 0; };
     virtual void setNumBooksBorrowed(int ){};
+    virtual int getAvailableSlot(){ return 0; };
     virtual string* getBookBorrowed(){ return nullptr; };
-    virtual int getNumBookBorrowed(){ return 1; };
+    virtual int getNumBookBorrowed(){ return 0; };
+    virtual void addBook(string ){}
 
+    virtual ~Person(){}
     virtual string getRole() const = 0;
     virtual int menu() = 0;
     virtual void printInfo() const;
+
 };
 
 Person::Person(){

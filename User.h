@@ -18,6 +18,7 @@ public:
 
     int getLateFee(){ return lateFee; }
 
+    int getAvailableSlot(){ return availableSlot; }
     int getNumBookBorrowed(){ return numBooksBorrowed; }
     void setNumBooksBorrowed(int i) override{ numBooksBorrowed = i; }
     string* getBookBorrowed() override{ return booksBorrowed; }
@@ -28,10 +29,8 @@ public:
 User::User():Person(){
     numBooksBorrowed = 0;
     lateFee = 0;
-    availableSlot = 0;
+    availableSlot = maxNumBooks - numBooksBorrowed;
 }
-
-
 
 void User::addBook(string bookIndex){
     booksBorrowed[numBooksBorrowed] = bookIndex;

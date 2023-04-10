@@ -7,8 +7,9 @@ struct Book{
     string publisher;
     int publishingYear;
     string borrowerName;
+    string startDate;
     string expirationDate;
     int overdueCharge;
-    string availability;
+    bool available;
 
 };
