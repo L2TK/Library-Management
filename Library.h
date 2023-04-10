@@ -146,7 +146,7 @@ void Library::supervisorExecuteMenu(){
     else{
         cout << "Invalid option. Please try again." << endl;
     }
-    supervisorExecuteMenu();
+    toMenu();
 }
 
 void Library::librarianExecuteMenu(){
@@ -255,6 +255,7 @@ void Library::addBook(){
     cout << "Enter book's pushlishing year: " << endl;
     cin >> b->publishingYear;
     b->borrowerName = "none";
+    b->startDate = "none";
     b->expirationDate = "none";
     b->overdueCharge = 0;
     b->available = true;
@@ -448,7 +449,7 @@ void Library::addAdmin(){
 
 void Library::deleteAdmin(){
     viewAllLibrarians();
-    cout << "-----Add an Delete-----" << endl;
+    cout << "-----Delete an Admin-----" << endl;
     string input;
     int inputID;
     bool found = false;
@@ -487,11 +488,10 @@ void Library::viewAllLibrarians(){
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getRole() == "librarian"){
             personArr[i]->printInfo();
+            cout << endl;
         }
     }
-    cout << "Enter any key to continue:" << endl;
     system("pause");
-    toMenu();
 }
 
 void Library::viewAllUsers(){
@@ -502,44 +502,39 @@ void Library::viewAllUsers(){
             cout << endl;
         }
     }
-    cout << "Enter any key to continue:" << endl;
     system("pause");
-    toMenu();
 }
 
 void Library::viewAllAvailableBooks(){
     cout << "Available Book" << endl;
     for(int i = 0; i < bookArrSize; i++){
         if(bookArr[i]->available == true){
-            cout << "Index: " << bookArr[i]->index << endl;
-            cout << "Title: " << bookArr[i]->title << endl;
-            cout << "Author: " <<bookArr[i]->authorName << endl;
-            cout << "Publisher: " <<bookArr[i]->publisher << endl;
-            cout << "Publishing Year: " <<bookArr[i]->publishingYear << endl;
+            cout << "Index           : " << bookArr[i]->index << endl;
+            cout << "Title           : " << bookArr[i]->title << endl;
+            cout << "Author          : " <<bookArr[i]->authorName << endl;
+            cout << "Publisher       : " <<bookArr[i]->publisher << endl;
+            cout << "Publishing Year : " <<bookArr[i]->publishingYear << endl;
             cout << endl;
         }
     }
-    cout << "Enter any key to continue:" << endl;
     system("pause");
-    toMenu();
 }
 
 void Library::viewAllBooks(){
     cout << "All Books' Information" << endl;
     for(int i = 0; i < bookArrSize; i++){
-        cout << "Index: " << bookArr[i]->index << endl;
-        cout << "Title: " << bookArr[i]->title << endl;
-        cout << "Author: " <<bookArr[i]->authorName << endl;
-        cout << "Publisher: " <<bookArr[i]->publisher << endl;
-        cout << "Publishing Year: " <<bookArr[i]->publishingYear << endl;
-        cout << "Borrower: " <<bookArr[i]->borrowerName << endl;
-        cout << "Expiration Date: " <<bookArr[i]->expirationDate << endl;
-        cout << "Overdue Charge: " <<bookArr[i]->overdueCharge << endl;        
+        cout << "Index           : " << bookArr[i]->index << endl;
+        cout << "Title           : " << bookArr[i]->title << endl;
+        cout << "Author          : " << bookArr[i]->authorName << endl;
+        cout << "Publisher       : " << bookArr[i]->publisher << endl;
+        cout << "Publishing Year : " << bookArr[i]->publishingYear << endl;
+        cout << "Borrower        : " << bookArr[i]->borrowerName << endl;
+        cout << "Start Date      : " << bookArr[i]->startDate << endl;
+        cout << "Expiration Date : " << bookArr[i]->expirationDate << endl;
+        cout << "Overdue Charge  : " << bookArr[i]->overdueCharge << endl;        
         cout << endl;
     }
-    cout << "Enter any key to continue:" << endl;
     system("pause");
-    toMenu();
 }
 
 void Library::logIn(){
@@ -603,6 +598,7 @@ string Library::logInMenu(){
     cout << "||   2 - Librarian                          ||" << endl;
     cout << "||   3 - Faculty                            ||" << endl;
     cout << "||   4 - Student                            ||" << endl;
+    cout << "||   5 - Quit                               ||" << endl;
     cout << "||                                          ||" << endl;
     cout << "**********************************************" << endl;
     cout << endl;
@@ -624,8 +620,13 @@ string Library::logInMenu(){
         role = "student";
         cout << "--------------Loging in as Student---------------" << endl;
     }
+    else if(inputNum == 5){
+        cout << "Exiting program..." << endl;
+        Sleep(2000);
+        exit(0);
+    }
     else{
-        cout << "Invalid role. Please enter 1 or 2 only." << endl;
+        cout << "Invalid role. Please enter 1 - 5 only." << endl;
         logInMenu();
     }
     return role;

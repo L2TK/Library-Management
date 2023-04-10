@@ -39,7 +39,7 @@ void User::addBook(string bookIndex){
 
 void User::printInfo() const {
     Person::printInfo();
-    cout << "Book borrowing:" << endl;
+    cout << "Book borrowing:" <<  numBooksBorrowed << endl;
     for(int i = 0; i < numBooksBorrowed; i++){
         cout << "   ID: " << booksBorrowed[i] << endl;
     }
