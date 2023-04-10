@@ -7,14 +7,15 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <sstream>
 using namespace std;
-
 
 class Library{
     private:
         Person* personArr[100];
         Book* bookArr[100];
-
+        Person* userPtr;
         int numSupervisor;
         int numLibrarian;
         int numStudent;
@@ -23,6 +24,14 @@ class Library{
         int bookArrSize;
 
         Person* isValidMem(string, string, string);
+        void supervisorExecuteMenu();
+        void librarianExecuteMenu(){};
+        void studentExecuteMenu(){};
+        void facultyExecuteMenu(){};
+        void addLibrarian();
+        void deleteLibrarian();
+        void printAdmin();
+        void printBook(){};
     public:
         Library();
         void logIn();
@@ -39,7 +48,6 @@ class Library{
 
         int getUserArrSize(){ return personArrSize; }
         int getBookArrSize(){ return bookArrSize; }
-        void addLibrarian();
 };
 
 Library::Library(){
@@ -49,6 +57,7 @@ Library::Library(){
     numLibrarian = 0;
     numSupervisor = 0;
     numStudent = 0;
+    userPtr = nullptr;
     for(int i = 0; i < 100; i++){
         bookArr[i] = nullptr;
     }
@@ -57,10 +66,128 @@ Library::Library(){
     }
 }
 
+void Library::supervisorExecuteMenu(){
+    int choice =  userPtr->menu();
+    if(choice == 1){
+        addLibrarian();
+    }
+    else if(choice ==2){
+        deleteLibrarian();
+    }
+    else if(choice == 3){
+
+    }
+    else if(choice == 4){
+
+    }
+    else{
+        cout << "Invalid option. Please try again." << endl;
+    }
+    supervisorExecuteMenu();
+}
+
+void Library::addLibrarian(){
+    int role;
+    if(numLibrarian == 10){
+        cout << "Librarian slot is full." << endl;
+        return;
+    }
+    string input;
+    cout << "-----Add a librarian-----" << endl;
+    cout << "Enter a role: " << endl;
+    cout << "1 - Supervisor " << endl;
+    cout << "2 - Librarian " << endl;
+    cin >> role;
+    if(role == 1){
+        personArr[personArrSize] = new Supervisor();
+        numSupervisor++;
+    }
+    else if(role == 2){
+        personArr[personArrSize] = new Librarian();
+        numLibrarian++;
+    }
+    cout << "-------------------------" << endl;
+    cout << "Enter first Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setFirstName(input);
+    cout << "-------------------------" << endl;
+    cout << "Enter middle Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setMiddleName(input);
+    cout << "-------------------------" << endl;
+    cout << "Enter last Name:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setLastName(input);
+    cout << "-------------------------" << endl;
+    cout << "Enter date of birth (mm-dd-yyy):" << endl;
+    cin >> input;
+    personArr[personArrSize]->setDateOfBirth(input);
+    cout << "-------------------------" << endl;
+    cout << "Enter an username:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setUsername(input);
+    cout << "-------------------------" << endl;
+    cout << "Enter a password:" << endl;
+    cin >> input;
+    personArr[personArrSize]->setPassword(input);
+    
+    int id = rand()%30;
+    personArr[personArrSize]->setID(id);
+    personArrSize++;
+    numLibrarian++;
+    savePerson();
+}
+
+void Library::deleteLibrarian(){
+    string input;
+    int inputID;
+    bool found = false;
+    printAdmin();
+    cout << "-------------------------" << endl;
+    cout << "Enter librarian's ID you want to remove(or \"quit\" to quit):" << endl;
+    cin >> input;
+    if(input == "quit"){
+        cout << "Backing to menu..." << endl;
+        Sleep(1500);
+        supervisorExecuteMenu();
+    }
+    else{
+        istringstream iss(input);
+        iss >> inputID;
+    }
+    cout << "You entered: " << inputID << endl;
+    for(int i = 0; i < personArrSize; i++){
+        if(personArr[i]->getID() == inputID){
+            found = true;
+            delete personArr[i];
+            personArr[i] = nullptr;
+            for(int j = i; j < personArrSize; j++){
+                personArr[j] = personArr[j+1];
+            }
+            personArrSize--;
+            numLibrarian--;
+            savePerson();
+            break;
+        }
+    }
+    if(!found){
+        cout << "You entered invalid ID. Please try again." << endl;
+        deleteLibrarian();
+    }
+}
+
+void Library::printAdmin(){
+    cout << "-------------View all librarian-------------- " << endl;
+    for(int i = 0; i < personArrSize; i++){
+        if(personArr[i]->getRole() == "librarian"){
+            personArr[i]->printInfo();
+        }
+    }
+}
+
 void Library::logIn(){
     string role;
     string username, password;
-    Person* personPtr = nullptr;
     role = logInMenu();
     cout << "----------------------------------------------" << endl;
     cout << "Enter your username: " << endl;
@@ -69,26 +196,33 @@ void Library::logIn(){
     cout << "Enter your password: " << endl;
     cin >> password;
 
-    personPtr = isValidMem(role, username, password);
-
-    if(personPtr){
-        if(personPtr->getRole() == "Supervisor"){
+    userPtr = isValidMem(role, username, password);
+    cout << 1 << endl;
+    if(userPtr){
+        if(userPtr->getRole() == "supervisor"){
             cout << "Signing in as Supervisor..." << endl;
+            Sleep(2000);
+            system("CLS");
+            supervisorExecuteMenu();
         }
-        else if(personPtr->getRole() == "Librarian"){
+        else if(userPtr->getRole() == "librarian"){
             cout << "Signing in as Librarian..." << endl;
+            Sleep(2000);
+            system("CLS");
+            librarianExecuteMenu();
         }
-        else if(personPtr->getRole() == "Student"){
+        else if(userPtr->getRole() == "student"){
             cout << "Signing in as Student..." << endl;
+            Sleep(2000);
+            system("CLS");
+            studentExecuteMenu();
         }
-        else if(personPtr->getRole() == "Faculty"){
+        else if(userPtr->getRole() == "faculty"){
             cout << "Signing in as Faculty..." << endl;
+            Sleep(2000);
+            system("CLS");
+            facultyExecuteMenu();
         }
-        Sleep(2000);
-        cout << "Loading Menu..." << endl;
-        Sleep(2000);
-        system("CLS");
-        personPtr->executeMenu();
     }
     else{
         cout << "Login failed. Please try again." << endl;
@@ -159,19 +293,19 @@ void Library::loadPerson(){
     personArrSize = 0;
     while(ifs >>line){
         if(line == "supervisor"){
-            p = new Supervisor(this);
+            p = new Supervisor();
             numSupervisor++;
         }
         else if(line == "librarian"){
-            p = new Librarian(this);
+            p = new Librarian();
             numLibrarian++;
         }
         else if(line == "faculty"){
-            p = new Faculty(this);
+            p = new Faculty();
             numFaculty++;
         }
         else if(line == "student"){
-            p = new Student(this);
+            p = new Student();
             numStudent++;
         }
         ifs >> line;
@@ -198,60 +332,10 @@ void Library::loadPerson(){
         }
         personArr[personArrSize] = p;
         personArrSize++;
-        cout << 1 << endl;
         ifs.ignore();
     }
 }
         
-void Library::addLibrarian(){
-    int role;
-    if(numLibrarian == 10){
-        cout << "Librarian slot is full." << endl;
-        return;
-    }
-    string input;
-    cout << "-----Add a librarian-----" << endl;
-    cout << "Enter a role: " << endl;
-    cout << "1 - Supervisor " << endl;
-    cout << "2 - Librarian " << endl;
-    cin >> role;
-    if(role == 1){
-        personArr[personArrSize] = new Supervisor(this);
-        numSupervisor++;
-    }
-    else if(role == 2){
-        personArr[personArrSize] = new Librarian(this);
-        numLibrarian++;
-    }
-    cout << "Enter first Name:" << endl;
-    cin >> input;
-    personArr[personArrSize]->setFirstName(input);
-
-    cout << "Enter middle Name:" << endl;
-    cin >> input;
-    personArr[personArrSize]->setMiddleName(input);
-
-    cout << "Enter last Name:" << endl;
-    cin >> input;
-    personArr[personArrSize]->setLastName(input);
-
-    cout << "Enter date of birth (mm-dd-yyy):" << endl;
-    cin >> input;
-    personArr[personArrSize]->setDateOfBirth(input);
-
-    cout << "Enter an username:" << endl;
-    cin >> input;
-    personArr[personArrSize]->setUsername(input);
-
-    cout << "Enter a password:" << endl;
-    cin >> input;
-    personArr[personArrSize]->setPassword(input);
-    
-    int id = rand()%30;
-    personArr[personArrSize]->setID(id);
-    personArrSize++;
-}
-
 
 void Library::loadBooks(){
     ifstream ifs("BookData.txt");

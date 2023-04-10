@@ -10,44 +10,41 @@ protected:
     int availableSlot;
     int maxNumBooks;
 
+    void addBook(string);
 public:
-    User():Person(){}
-    User(Library* libPtr);
+    User();
     void setLateFee(int _lateFee){ lateFee = _lateFee; }
     void setMaxNumBooks(int o){ maxNumBooks = o; }
 
     int getLateFee(){ return lateFee; }
 
-    void addBook(string);
-    void borrowBooks();
-    void returnBook();
-
     int getNumBookBorrowed(){ return numBooksBorrowed; }
     void setNumBooksBorrowed(int i) override{ numBooksBorrowed = i; }
     string* getBookBorrowed() override{ return booksBorrowed; }
-    void executeMenu() override;
     virtual string getRole() const = 0;
-
+    void printInfo() const override;
 };
 
-User::User(Library* libPtr):Person(Library* libPtr){
+User::User():Person(){
     numBooksBorrowed = 0;
     lateFee = 0;
     availableSlot = 0;
 }
 
-void User::borrowBooks(){
 
-}
-
-void User::returnBook(){
-
-}
 
 void User::addBook(string bookIndex){
     booksBorrowed[numBooksBorrowed] = bookIndex;
+    numBooksBorrowed++;
 }
 
-void User::executeMenu(){
-    cout << "Hi, I'm " << getRole() << endl;
+void User::printInfo() const {
+    cout << "Name: " <<  firstName << " " << middleName << " " << lastName << endl;
+    cout << "ID: " << ID << endl;
+    cout << "Date of Birth: " << dateOfBirth << endl;
+    cout << "Book borrowing:" << endl;
+    for(int i = 0; i < numBooksBorrowed; i++){
+        cout << "   ID: " << booksBorrowed[i] << endl;
+    }
+    cout << "Late fee: " << lateFee << endl;
 }

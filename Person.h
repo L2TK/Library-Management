@@ -1,7 +1,6 @@
 #pragma once   
 #include <string>
 #include <iostream>
-#include "Library.h"
 using namespace std;
 class Person{
 protected:
@@ -12,10 +11,8 @@ protected:
     string username;
     string password;
     string dateOfBirth;
-    Library* l1;
 public:
     Person();
-    Person(Library* );
     string getFirstName(){ return firstName; }
     string getMiddleName(){ return middleName; }
     string getLastName(){ return lastName; }
@@ -36,8 +33,9 @@ public:
     virtual string* getBookBorrowed(){ return nullptr; };
     virtual int getNumBookBorrowed(){ return 1; };
 
-    virtual void executeMenu() = 0;
     virtual string getRole() const = 0;
+    virtual int menu() = 0;
+    virtual void printInfo() const = 0;
 };
 
 Person::Person(){
@@ -48,16 +46,4 @@ Person::Person(){
     username = "";
     password = "";
     dateOfBirth = "";
-    l1 = nullptr
-}
-
-Person::Person(Library* libPtr){
-    lastName = "";
-    firstName = "";
-    middleName = "";
-    ID = 0;
-    username = "";
-    password = "";
-    dateOfBirth = "";
-    l1 = libPtr
 }

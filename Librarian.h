@@ -1,18 +1,26 @@
 #pragma once
-#include "Admin.h"
-class Librarian: public Admin{
-private:
-    string role;
+#include "Person.h"
+class Librarian: public Person{
 public:
-    Librarian():Admin(){}
-    Librarian(Library* libPtr):Admin(Library* libPtr){
-        role = "Librarian";
-    }
+    Librarian():Person(){}
+    ~Librarian();
     string getRole() const override {return "librarian"; }
-    void executeMenu() override;
-
+    int menu() override;
+    void printInfo() const override;
 };
 
-void Librarian::executeMenu(){
+int Librarian::menu(){
     cout << "Hi, I'm " << getRole() << endl;
+    return 1;
+}
+
+void Librarian::printInfo() const {
+    cout << "Role: Librarian" << endl;
+    cout << "Name: " <<  firstName << " " << middleName << " " << lastName << endl;
+    cout << "ID: " << ID << endl;
+    cout << "Date of Birth: " << dateOfBirth << endl;
+}
+
+Librarian::~Librarian(){
+    cout << "Librarian delete." << endl;
 }
