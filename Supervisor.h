@@ -24,7 +24,7 @@ int Supervisor::menu(){
     cout << "||   5 - Add a book                         ||" << endl;
     cout << "||   6 - Delete a book                      ||" << endl;
     cout << "||   7 - Views all librarians               ||" << endl;
-    cout << "||   8 - Views all students                 ||" << endl;
+    cout << "||   8 - Views all users                    ||" << endl;
     cout << "||   9 - Views all books                    ||" << endl;
     cout << "||   10 - Log out                           ||" << endl;
     cout << "||                                          ||" << endl;
@@ -36,7 +36,5 @@ int Supervisor::menu(){
 
 void Supervisor::printInfo() const {
     cout << "Role: Supervisor" << endl;
-    cout << "Name: " <<  firstName << " " << middleName << " " << lastName << endl;
-    cout << "ID: " << ID << endl;
-    cout << "Date of Birth: " << dateOfBirth << endl;
+    Person::printInfo();
 }

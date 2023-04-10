@@ -28,10 +28,12 @@ class Library{
         void librarianExecuteMenu(){};
         void studentExecuteMenu(){};
         void facultyExecuteMenu(){};
+
         void addLibrarian();
         void deleteLibrarian();
-        void printAdmin();
-        void printBook(){};
+        void viewAllLibrarians();
+        void viewAllUsers();
+        void viewAllBooks(){};
     public:
         Library();
         void logIn();
@@ -50,6 +52,8 @@ class Library{
         int getBookArrSize(){ return bookArrSize; }
 };
 
+
+
 Library::Library(){
     personArrSize = 0;
     bookArrSize = 0;
@@ -66,12 +70,30 @@ Library::Library(){
     }
 }
 
+void Library::viewAllLibrarians(){
+    for(int i = 0; i < personArrSize; i++){
+        if(personArr[i]->getRole() == "librarian"){
+            personArr[i]->printInfo();
+            cout << endl;
+        }
+    }
+}
+
+void Library::viewAllLibrarians(){
+    for(int i = 0; i < personArrSize; i++){
+        if(personArr[i]->getRole() == "librarian"){
+            personArr[i]->printInfo();
+            cout << endl;
+        }
+    }
+}
+
 void Library::supervisorExecuteMenu(){
     int choice =  userPtr->menu();
     if(choice == 1){
         addLibrarian();
     }
-    else if(choice ==2){
+    else if(choice == 2){
         deleteLibrarian();
     }
     else if(choice == 3){
@@ -142,7 +164,7 @@ void Library::deleteLibrarian(){
     string input;
     int inputID;
     bool found = false;
-    printAdmin();
+    viewAllLibrarians();
     cout << "-------------------------" << endl;
     cout << "Enter librarian's ID you want to remove(or \"quit\" to quit):" << endl;
     cin >> input;
@@ -176,7 +198,7 @@ void Library::deleteLibrarian(){
     }
 }
 
-void Library::printAdmin(){
+void Library::viewAllLibrarians(){
     cout << "-------------View all librarian-------------- " << endl;
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getRole() == "librarian"){

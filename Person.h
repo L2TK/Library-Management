@@ -35,7 +35,7 @@ public:
 
     virtual string getRole() const = 0;
     virtual int menu() = 0;
-    virtual void printInfo() const = 0;
+    virtual void printInfo() const;
 };
 
 Person::Person(){
@@ -46,4 +46,10 @@ Person::Person(){
     username = "";
     password = "";
     dateOfBirth = "";
+}
+
+void Person::printInfo() const {
+    cout << "Name: " <<  firstName << " " << middleName << " " << lastName << endl;
+    cout << "ID: " << ID << endl;
+    cout << "Date of Birth: " << dateOfBirth << endl;
 }
