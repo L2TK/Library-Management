@@ -18,8 +18,8 @@ int Librarian::menu(){
     cout << "||   2 - Delete a user                      ||" << endl;
     cout << "||   3 - Add a book                         ||" << endl;
     cout << "||   4 - Delete a book                      ||" << endl;
-    cout << "||   5 - Views all users                    ||" << endl;
-    cout << "||   6 - Views all books                    ||" << endl;
+    cout << "||   5 - View  all users                    ||" << endl;
+    cout << "||   6 - View  all books                    ||" << endl;
     cout << "||   7 - Log out                            ||" << endl;
     cout << "||                                          ||" << endl;
     cout << "**********************************************" << endl;

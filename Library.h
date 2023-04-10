@@ -132,7 +132,7 @@ void Library::supervisorExecuteMenu(){
         deleteBook();
     }
     else if(choice == 7){
-        viewAllBooks();
+        viewAllLibrarians();
     }
     else if(choice == 8){
         viewAllUsers();
@@ -489,6 +489,9 @@ void Library::viewAllLibrarians(){
             personArr[i]->printInfo();
         }
     }
+    cout << "Enter any key to continue:" << endl;
+    system("pause");
+    toMenu();
 }
 
 void Library::viewAllUsers(){
@@ -496,8 +499,12 @@ void Library::viewAllUsers(){
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getRole() == "student" || personArr[i]->getRole() == "faculty"){
             personArr[i]->printInfo();
+            cout << endl;
         }
     }
+    cout << "Enter any key to continue:" << endl;
+    system("pause");
+    toMenu();
 }
 
 void Library::viewAllAvailableBooks(){
@@ -512,6 +519,9 @@ void Library::viewAllAvailableBooks(){
             cout << endl;
         }
     }
+    cout << "Enter any key to continue:" << endl;
+    system("pause");
+    toMenu();
 }
 
 void Library::viewAllBooks(){
@@ -527,6 +537,9 @@ void Library::viewAllBooks(){
         cout << "Overdue Charge: " <<bookArr[i]->overdueCharge << endl;        
         cout << endl;
     }
+    cout << "Enter any key to continue:" << endl;
+    system("pause");
+    toMenu();
 }
 
 void Library::logIn(){
@@ -692,7 +705,8 @@ void Library::loadBooks(){
         getline(ifs, book1->publisher);  
         ifs >> book1->publishingYear;
         ifs.ignore();  
-        getline(ifs, book1->borrowerName);  
+        getline(ifs, book1->borrowerName); 
+        getline(ifs, book1->startDate); 
         getline(ifs, book1->expirationDate);  
         ifs >> book1->overdueCharge;
         if(book1->borrowerName == "none"){
@@ -738,6 +752,7 @@ void Library::saveBooks(){
         ofs << bookArr[i]->publisher << endl;
         ofs << bookArr[i]->publishingYear << endl;
         ofs << bookArr[i]->borrowerName << endl;
+        ofs << bookArr[i]->startDate << endl;
         ofs << bookArr[i]->expirationDate << endl;
         ofs << bookArr[i]->overdueCharge << endl;        
         ofs << endl;
