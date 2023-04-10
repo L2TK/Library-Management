@@ -12,19 +12,20 @@ protected:
 
 public:
     User();
-    void setNumBooksBorrowed(int i){ numBooksBorrowed = i; }
     void setLateFee(int _lateFee){ lateFee = _lateFee; }
     void setMaxNumBooks(int o){ maxNumBooks = o; }
 
-    int getNumBookBorrowed(){ return numBooksBorrowed; }
     int getLateFee(){ return lateFee; }
-    string* getBookBorrowed(){ return booksBorrowed; }
 
-    virtual string getRole() const = 0;
-    void executeMenu();
     void addBook(string);
     void borrowBooks();
     void returnBook();
+
+    int getNumBookBorrowed(){ return numBooksBorrowed; }
+    void setNumBooksBorrowed(int i) override{ numBooksBorrowed = i; }
+    string* getBookBorrowed() override{ return booksBorrowed; }
+    void executeMenu() override;
+    virtual string getRole() const = 0;
 
 };
 

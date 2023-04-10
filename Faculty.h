@@ -7,5 +7,5 @@ public:
         booksBorrowed = new string [15];
         maxNumBooks = 15;
     }
-    string getRole() const override{ return "Faculty"; }
+    string getRole() const override{ return "faculty"; }
 };

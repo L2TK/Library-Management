@@ -8,10 +8,10 @@ public:
     Supervisor():Admin(){
         role = "Supervisor";
     };
-    string getRole() const override {return "Supervisor"; }
+    string getRole() const override {return "supervisor"; }
 
     void executeMenu() override;
-
+    void menu();
     void addLibrarian(Admin* adminArr[], int& adminArrsize);
     void deleteLibrarian(int id, Admin* adminArr[], int& adminArrsize);
 };
@@ -64,9 +64,24 @@ void Supervisor::addLibrarian(Admin* adminArr[], int& adminArrsize){
     adminArrsize++;
 }
 
-
 void Supervisor::executeMenu(){
-    cout << "Hi, I'm " << getRole() << endl;
+    int choice;
+    menu();
+    cout << "Choose one option:" << endl;
+    cin >> choice;
+    if(choice == 1){
+    }
 }
 
 
+void Supervisor::menu(){
+    cout << "**********************************************" << endl;
+    cout << "||   Supervisor Menu:                       ||" << endl;
+    cout << "||                                          ||" << endl;
+    cout << "||   1 - Add a librarian                    ||" << endl;
+    cout << "||   2 - Delete a librarian                 ||" << endl;
+    cout << "||   3 - Views all librarians               ||" << endl;
+    cout << "||   4 - Log out                            ||" << endl;
+    cout << "||                                          ||" << endl;
+    cout << "**********************************************" << endl;
+}

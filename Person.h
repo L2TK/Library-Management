@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 using namespace std;
-
 class Person{
 protected:
     string lastName;
@@ -30,7 +29,11 @@ public:
     void setPassword(string _password){ password = _password; }
     void setID(int _ID){ ID = _ID; }
 
-    
+    virtual void setNumBooksBorrowed(int ){};
+    virtual string* getBookBorrowed(){ return nullptr; };
+    virtual int getNumBookBorrowed(){ return 1; };
+
+    virtual void executeMenu() = 0;
     virtual string getRole() const = 0;
 };
 Person::Person(){

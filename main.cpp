@@ -7,12 +7,10 @@ using namespace std;
 
 int main(){
     Library l1;
-    l1.loadAdmins();
-    l1.loadUsers();
+    l1.loadPerson();
     l1.loadBooks();
 
-    l1.saveAdmins();
-    l1.saveUsers();
+    l1.savePerson();
     l1.saveBooks();
     l1.logIn();
     return 0;

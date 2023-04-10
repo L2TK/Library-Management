@@ -7,7 +7,7 @@ public:
     Librarian():Admin(){
         role = "Librarian";
     };
-    string getRole() const override {return "Librarian"; }
+    string getRole() const override {return "librarian"; }
     void executeMenu() override;
 
 };

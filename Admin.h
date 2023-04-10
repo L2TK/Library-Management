@@ -7,8 +7,6 @@ private:
 public:
     Admin():Person(){ }
     void setRole(string n){ role = n; }
-    virtual string getRole() const = 0;
-    virtual void executeMenu() = 0;
     void printInfo();
 };
 
