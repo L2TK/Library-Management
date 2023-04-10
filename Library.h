@@ -70,23 +70,6 @@ Library::Library(){
     }
 }
 
-void Library::viewAllLibrarians(){
-    for(int i = 0; i < personArrSize; i++){
-        if(personArr[i]->getRole() == "librarian"){
-            personArr[i]->printInfo();
-            cout << endl;
-        }
-    }
-}
-
-void Library::viewAllLibrarians(){
-    for(int i = 0; i < personArrSize; i++){
-        if(personArr[i]->getRole() == "librarian"){
-            personArr[i]->printInfo();
-            cout << endl;
-        }
-    }
-}
 
 void Library::supervisorExecuteMenu(){
     int choice =  userPtr->menu();
@@ -161,10 +144,10 @@ void Library::addLibrarian(){
 }
 
 void Library::deleteLibrarian(){
+    viewAllLibrarians();
     string input;
     int inputID;
     bool found = false;
-    viewAllLibrarians();
     cout << "-------------------------" << endl;
     cout << "Enter librarian's ID you want to remove(or \"quit\" to quit):" << endl;
     cin >> input;
@@ -199,9 +182,18 @@ void Library::deleteLibrarian(){
 }
 
 void Library::viewAllLibrarians(){
-    cout << "-------------View all librarian-------------- " << endl;
+    cout << "-------------View all librarians-------------- " << endl;
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getRole() == "librarian"){
+            personArr[i]->printInfo();
+        }
+    }
+}
+
+void Library::viewAllUsers(){
+    cout << "-------------View all users-------------- " << endl;
+    for(int i = 0; i < personArrSize; i++){
+        if(personArr[i]->getRole() == "student" || personArr[i]->getRole() == "faculty"){
             personArr[i]->printInfo();
         }
     }
