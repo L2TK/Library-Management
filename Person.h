@@ -1,6 +1,7 @@
 #pragma once   
 #include <string>
 #include <iostream>
+#include "Book.h"
 using namespace std;
 class Person{
 protected:
@@ -30,12 +31,17 @@ public:
     void setPassword(string _password){ password = _password; }
     void setID(int _ID){ ID = _ID; }
 
+    virtual void setLateFee(int ){}
     virtual int getLateFee(){ return 0; };
     virtual void setNumBooksBorrowed(int ){};
     virtual int getAvailableSlot(){ return 0; };
-    virtual string* getBookBorrowed(){ return nullptr; };
+    virtual Book** getBookBorrowed(){ return nullptr; };
     virtual int getNumBookBorrowed(){ return 0; };
-    virtual void addBook(string ){}
+    virtual void borrowBook(Book* ){}
+    virtual bool returnBook(string ){return false;};
+    virtual void viewBorrowingBooks(){};
+    virtual void payLateFee(string ){};
+    virtual void viewLateFee(){};
 
     virtual ~Person(){}
     virtual string getRole() const = 0;

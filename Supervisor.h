@@ -7,10 +7,10 @@ private:
     string role;
 public:
     Supervisor():Person(){};
+    ~Supervisor();
     string getRole() const override {return "supervisor"; }
     void printInfo() const override;
     int menu() override;
-    ~Supervisor();
 };
 
 int Supervisor::menu(){

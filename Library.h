@@ -14,11 +14,18 @@
 using namespace std;
 
 
+chrono::system_clock::time_point today = chrono::system_clock::now();
+time_t t = chrono::system_clock::to_time_t(today);
+struct tm* now = localtime(&t);
+int currentYear = now->tm_year + 1900; // years since 1900
+int currentMonth = now->tm_mon + 1; // months since January [0-11]
+int currentDay = now->tm_mday; // day of the month [1-31]
+
 
 class Library{
     private:
-        Person* personArr[215];
-        Book* bookArr[100];
+        Person** personArr;
+        Book** bookArr;
 
         Person* userPtr;
 
@@ -54,9 +61,10 @@ class Library{
         void returnBook();
 
         void toMenu();
+        void logOut();
 
-        string getCurrentTime();
-        string getExpirationTime();
+        void setBookToNone(Book*);
+        void payLateFee();
 
     public:
         Library();
@@ -68,12 +76,6 @@ class Library{
 
         void savePerson();
         void saveBooks();
-
-        Person** getPersonArr(){ return personArr;}
-        Book** getBookArr(){ return bookArr;}
-
-        int getUserArrSize(){ return personArrSize; }
-        int getBookArrSize(){ return bookArrSize; }
 };
 
 Library::Library(){
@@ -84,15 +86,16 @@ Library::Library(){
     numSupervisor = 0;
     numStudent = 0;
     userPtr = nullptr;
-    for(int i = 0; i < 10; i++){
-        bookArr[i] = nullptr;
-    }
-    for(int i = 0; i < 215; i++){
-        personArr[i] = nullptr;
-    }
+    personArr = new Person* [215];
+    bookArr = new Book* [100];
 }
 
-
+void Library::logOut(){
+    cout << "Loging out..." << endl;
+    Sleep(1500);
+    system("cls");
+    logIn();
+}
 
 void Library::toMenu(){
     cout << "Loading menu..." << endl;
@@ -133,15 +136,18 @@ void Library::supervisorExecuteMenu(){
     }
     else if(choice == 7){
         viewAllLibrarians();
+        toMenu();
     }
     else if(choice == 8){
         viewAllUsers();
+        toMenu();
     }
     else if(choice == 9){
         viewAllBooks();
+        toMenu();
     }
     else if(choice == 10){
-        logIn();
+        logOut();
     }
     else{
         cout << "Invalid option. Please try again." << endl;
@@ -165,12 +171,14 @@ void Library::librarianExecuteMenu(){
     }
     else if(choice == 5){
         viewAllUsers();
+        toMenu();
     }
     else if(choice == 6){
         viewAllBooks();
+        toMenu();
     }
     else if(choice == 7){
-        logIn();
+        logOut();
     }
     else{
         cout << "Invalid option. Please try again." << endl;
@@ -184,22 +192,27 @@ void Library::userExecuteMenu(){
         borrowBook();
     }
     else if(choice == 2){
-        deleteUser();
+        returnBook();
     }
     else if(choice == 3){
-        addBook();
+        viewAllAvailableBooks();
+        toMenu();
     }
     else if(choice == 4){
-        deleteBook();
+        userPtr->viewBorrowingBooks();
+        system("Pause");
+        toMenu();
     }
     else if(choice == 5){
-        viewAllUsers();
+        userPtr->viewLateFee();
+        system("Pause");
+        toMenu();
     }
     else if(choice == 6){
-        viewAllBooks();
+        payLateFee();
     }
     else if(choice == 7){
-        logIn();
+        logOut();
     }
     else{
         cout << "Invalid option. Please try again." << endl;
@@ -211,14 +224,16 @@ void Library::borrowBook(){
     string index;
     if(userPtr->getAvailableSlot() == 0){
         cout << "Your slot is full. You can\'t borrow more books. Return books if you want to borrow more." << endl;
+        system("Pause");
         toMenu();
     }
     if(userPtr->getLateFee() != 0){
-        cout << "You have late fee that must be paid. Please pay late fee before borrow another book." << endl;
+        cout << "You have late fee that must be paid. Please pay late fee before borrowing another book." << endl;
+        system("Pause");
         toMenu();
     }
     viewAllAvailableBooks();
-    cout << "----------------Borrow Book----------------" << endl;
+    cout << "----------------Borrowing Book----------------" << endl;
     cout << "Enter book's index you want to borrow (or \"quit\" to quit):" << endl;
     cin >> index;
     if(index == "quit"){
@@ -226,11 +241,17 @@ void Library::borrowBook(){
     }
     for(int i = 0; i < bookArrSize; i++){
         if(bookArr[i]->available && bookArr[i]->index == index){
-            bookArr[i]->borrowerName == userPtr->getFullName();
-            bookArr[i]->startDate = getCurrentTime();
-            bookArr[i]->expirationDate = getExpirationTime();
+            bookArr[i]->available = false;
+            bookArr[i]->borrowerName = userPtr->getFullName();
+            bookArr[i]->startDay = currentDay;
+            bookArr[i]->startMonth = currentMonth;
+            bookArr[i]->startYear = currentYear;
+
+            bookArr[i]->expirationDay = bookArr[i]->startDay;
+            bookArr[i]->expirationMonth = bookArr[i]->startMonth + 1;
+            bookArr[i]->expirationYear = bookArr[i]->startYear;
             bookArr[i]->overdueCharge = 0;
-            userPtr->addBook(index);
+            userPtr->borrowBook(bookArr[i]);
             cout << "Proceed done!" << endl;
             toMenu();
         }
@@ -238,6 +259,31 @@ void Library::borrowBook(){
     }
     cout << "Invalid index. Please try again." << endl;
     borrowBook();
+}
+
+void Library::returnBook(){
+    string index;
+    bool found = false;
+    cout << "-----------Returning Book-----------" << endl;
+    userPtr->viewBorrowingBooks();
+    cout << "Enter index of book you want to return ( or \"quit\" to quit)" << endl;
+    cin >> index;
+    if(index == "quit"){
+        toMenu();
+    }
+    found = userPtr->returnBook(index);
+    if(found){
+        for(int i = 0; i < bookArrSize; i++){
+            if(bookArr[i]->index == index){
+                setBookToNone(bookArr[i]);
+                toMenu();
+            }
+        }
+    }
+    else{
+        cout << "Invalid index. Please try again." << endl;
+        returnBook();
+    }
 }
 
 void Library::addBook(){
@@ -254,11 +300,6 @@ void Library::addBook(){
     getline(cin, b->publisher);
     cout << "Enter book's pushlishing year: " << endl;
     cin >> b->publishingYear;
-    b->borrowerName = "none";
-    b->startDate = "none";
-    b->expirationDate = "none";
-    b->overdueCharge = 0;
-    b->available = true;
     bookArr[bookArrSize] = b;
     bookArrSize++;
     toMenu();
@@ -268,7 +309,7 @@ void Library::deleteBook(){
     bool found = false;
     string inputIndex;
     viewAllBooks();
-    cout << "--------Delete a book---------" << endl;
+    cout << "---------------Deleting a book--------------" << endl;
     cout << "Enter book's index you to want delete (or \"quit\" to quit):" << endl;
     cin >> inputIndex;
     if(inputIndex == "quit"){
@@ -298,7 +339,7 @@ void Library::addUser(){
     int role, inputID;
     Person* p = nullptr;
     string input;
-    cout << "-----Add an User-----" << endl;
+    cout << "--------------Adding an User-------------" << endl;
     cout << "Enter a role: " << endl;
     cout << "1 - Faculty " << endl;
     cout << "2 - Student " << endl;
@@ -511,9 +552,9 @@ void Library::viewAllAvailableBooks(){
         if(bookArr[i]->available == true){
             cout << "Index           : " << bookArr[i]->index << endl;
             cout << "Title           : " << bookArr[i]->title << endl;
-            cout << "Author          : " <<bookArr[i]->authorName << endl;
-            cout << "Publisher       : " <<bookArr[i]->publisher << endl;
-            cout << "Publishing Year : " <<bookArr[i]->publishingYear << endl;
+            cout << "Author          : " << bookArr[i]->authorName << endl;
+            cout << "Publisher       : " << bookArr[i]->publisher << endl;
+            cout << "Publishing Year : " << bookArr[i]->publishingYear << endl;
             cout << endl;
         }
     }
@@ -529,8 +570,12 @@ void Library::viewAllBooks(){
         cout << "Publisher       : " << bookArr[i]->publisher << endl;
         cout << "Publishing Year : " << bookArr[i]->publishingYear << endl;
         cout << "Borrower        : " << bookArr[i]->borrowerName << endl;
-        cout << "Start Date      : " << bookArr[i]->startDate << endl;
-        cout << "Expiration Date : " << bookArr[i]->expirationDate << endl;
+        cout << "Start Date      : " << to_string(bookArr[i]->startMonth) 
+                                        + "-" + to_string(bookArr[i]->startDay)  
+                                        + "-" + to_string(bookArr[i]->startYear) << endl;
+        cout << "Expiration Date : " << to_string(bookArr[i]->expirationMonth) 
+                                        + "-" + to_string(bookArr[i]->expirationDay) 
+                                        + "-" + to_string(bookArr[i]->expirationYear) << endl;
         cout << "Overdue Charge  : " << bookArr[i]->overdueCharge << endl;        
         cout << endl;
     }
@@ -632,6 +677,43 @@ string Library::logInMenu(){
     return role;
 }
 
+void Library::setBookToNone(Book* book){
+    book->available = true;
+    book->borrowerName = "none";
+    book->startDay = 0;
+    book->startMonth = 0;
+    book->startYear = 0;
+    book->expirationDay = 0;
+    book->expirationMonth = 0;
+    book->expirationYear = 0;
+    book->overdueCharge = 0;
+}
+
+void Library::payLateFee(){
+    string index;
+    int recharge = 0;
+    userPtr->viewLateFee();
+    if(userPtr->getLateFee() == 0){
+        toMenu();
+    }
+    cout << "Enter the index of book you want to pay." << endl;
+    cin >> index;
+    userPtr->payLateFee(index);
+    for(int i = 0; i < bookArrSize; i++){
+        if(bookArr[i]->borrowerName == userPtr->getFullName() && bookArr[i]->index == index){
+            bookArr[i]->startDay = currentDay;
+            bookArr[i]->startMonth = currentMonth;
+            bookArr[i]->startYear = currentYear;
+
+            bookArr[i]->expirationDay = bookArr[i]->startDay;
+            bookArr[i]->expirationMonth = bookArr[i]->startMonth + 1;
+            bookArr[i]->expirationYear = bookArr[i]->startYear;
+            bookArr[i]->overdueCharge = 0;
+        }
+    }
+    toMenu();
+}
+
 void Library::loadPerson(){
     Person* p = nullptr;
     string line, bookIndex;
@@ -674,12 +756,21 @@ void Library::loadPerson(){
         ifs >> line;
         p->setDateOfBirth(line);
         if(p->getRole() == "faculty" || p->getRole() == "student"){
+            int lateFee = 0;
             ifs >> numBook;
             p->setNumBooksBorrowed(numBook);
             for(int i = 0; i < numBook; i++){
                 ifs >> bookIndex;
-                p->getBookBorrowed()[i] = bookIndex;
+                for(int j = 0; j < bookArrSize; j++){
+                    if(bookArr[j]->index == bookIndex){
+                        p->getBookBorrowed()[i] = bookArr[j];
+                        if(bookArr[j]->overdueCharge > 0){
+                            lateFee += bookArr[j]->overdueCharge;
+                        }
+                    }
+                }
             }
+            p->setLateFee(lateFee);
         }
         personArr[personArrSize] = p;
         personArrSize++;
@@ -689,6 +780,8 @@ void Library::loadPerson(){
         
 
 void Library::loadBooks(){
+    string startDate;
+    string expirationDate;
     ifstream ifs("BookData.txt");
     if(!ifs.is_open()){
         cout << "Book Data File Not Found!" << endl;
@@ -698,6 +791,7 @@ void Library::loadBooks(){
     bookArrSize = 0;
     string index;
     while(ifs >> index){
+        int dateArr [3];
         ifs.ignore();
         Book* book1 = new Book;
         book1->index = index;
@@ -707,14 +801,37 @@ void Library::loadBooks(){
         ifs >> book1->publishingYear;
         ifs.ignore();  
         getline(ifs, book1->borrowerName); 
-        getline(ifs, book1->startDate); 
-        getline(ifs, book1->expirationDate);  
+        
+        getline(ifs, startDate); 
+        getline(ifs, expirationDate);  
+
         ifs >> book1->overdueCharge;
-        if(book1->borrowerName == "none"){
-            book1->available = true;
-        }
-        else{
+        if(book1->borrowerName != "none"){
             book1->available = false;
+            int i = 0;
+            int position = 0;
+            while(startDate.find("-", 0) != string::npos){
+                position = startDate.find("-", 0);
+                dateArr[i] = stoi(startDate.substr(0, position));
+                startDate = startDate.substr(position + 1);
+                i++;
+            }
+            dateArr[2] = stoi(startDate);
+            book1->startMonth = dateArr[0];
+            book1->startDay = dateArr[1];
+            book1->startYear = dateArr[2];
+            i = 0;
+            position = 0;
+            while(expirationDate.find("-", 0) != string::npos){
+                position = expirationDate.find("-", 0);
+                dateArr[i] = stoi(expirationDate.substr(0, position));
+                expirationDate = expirationDate.substr(position + 1);
+                i++;
+            }
+            dateArr[2] = stoi(expirationDate);
+            book1->expirationMonth = dateArr[0];
+            book1->expirationMonth = dateArr[1];
+            book1->expirationYear = dateArr[2];
         }
         bookArr[bookArrSize] = book1;
         bookArrSize++;
@@ -736,7 +853,7 @@ void Library::savePerson(){
         if(personArr[i]->getRole() == "student"|| personArr[i]->getRole() == "faculty"){
             ofs << personArr[i]->getNumBookBorrowed() << endl;
             for(int j = 0; j < personArr[i]->getNumBookBorrowed(); j++){
-                ofs << personArr[i]->getBookBorrowed()[j] << endl;
+                ofs << personArr[i]->getBookBorrowed()[j]->index << endl;
             }
         }
         ofs << endl;
@@ -753,30 +870,14 @@ void Library::saveBooks(){
         ofs << bookArr[i]->publisher << endl;
         ofs << bookArr[i]->publishingYear << endl;
         ofs << bookArr[i]->borrowerName << endl;
-        ofs << bookArr[i]->startDate << endl;
-        ofs << bookArr[i]->expirationDate << endl;
+        ofs << to_string(bookArr[i]->startMonth) 
+                + "-" + to_string(bookArr[i]->startDay)  
+                 + "-" + to_string(bookArr[i]->startYear) << endl;
+        ofs << to_string(bookArr[i]->expirationMonth) 
+                + "-" + to_string(bookArr[i]->expirationDay) 
+                + "-" + to_string(bookArr[i]->expirationYear) << endl;
         ofs << bookArr[i]->overdueCharge << endl;        
         ofs << endl;
     }
     ofs.close();
-}
-
-string Library::getCurrentTime(){
-    chrono::system_clock::time_point today = chrono::system_clock::now();
-    time_t t = chrono::system_clock::to_time_t(today);
-    struct tm* now = localtime(&t);
-    int year = now->tm_year + 1900; // years since 1900
-    int month = now->tm_mon + 1; // months since January [0-11]
-    int day = now->tm_mday; // day of the month [1-31]
-    return to_string(month) + '-' + to_string(day) + '-' + to_string(year);
-}
-
-string Library::getExpirationTime(){
-    chrono::system_clock::time_point today = chrono::system_clock::now();
-    time_t t = chrono::system_clock::to_time_t(today);
-    struct tm* now = localtime(&t);
-    int year = now->tm_year + 1900;
-    int month = now->tm_mon + 1;
-    int day = now->tm_mday;
-    return to_string(month + 1) + '-' + to_string(day) + '-' + to_string(year);
 }

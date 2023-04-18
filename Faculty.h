@@ -4,8 +4,9 @@
 class Faculty: public User{
 public:    
     Faculty():User(){
-        booksBorrowed = new string [15];
+        booksBorrowed = new Book* [15];
         maxNumBooks = 15;
+        availableSlot = 15;
     }
     string getRole() const override{ return "faculty"; }
     int menu() override;

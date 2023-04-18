@@ -25,6 +25,18 @@ T.
 Tran
 11-22-2002
 
+student
+sam357
+sam753
+100
+Sam
+X.
+Red
+11-22-1995
+2
+A1
+A2
+
 faculty
 johnny234
 johnny432
@@ -47,17 +59,25 @@ D.
 Luffy
 11-22-2002
 2
+A6
 A7
-A9
+
+librarian
+asd
+asd
+123
+asd
+asd
+asd
+asd
 
 student
-321
-123
-900
-zxc
-asd
 qwe
-123
-1
-e12
+qwe
+444
+qwe
+qwe
+qwe
+qwe
+0
 

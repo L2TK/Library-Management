@@ -6,7 +6,7 @@ public:
     Student():User(){
         maxNumBooks = 5;
         availableSlot = 5;
-        booksBorrowed = new string [5];
+        booksBorrowed = new Book* [5];
     }
     ~Student();
     string getRole() const override{ return "student";}
