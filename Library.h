@@ -66,7 +66,7 @@ class Library{
         void setBookToNone(Book*);
         void payLateFee();
 
-        bool deletePerson(int );
+        bool deletePerson(string );
 
     public:
         Library();
@@ -395,30 +395,6 @@ void Library::addUser(){
     toMenu();
 }
 
-void Library::deleteUser(){
-    viewAllUsers();
-    cout << "-----Delete an User-----" << endl;
-    string input;
-    int inputID;
-    bool deleted = false;
-    cout << "-------------------------" << endl;
-    cout << "Enter user's ID you want to remove (or \"quit\" to quit):" << endl;
-    cin >> input;
-    if(input == "quit"){
-        cout << "Backing to menu..." << endl;
-        toMenu();
-    }
-    else{
-        istringstream iss(input);
-        iss >> inputID;
-    }
-    deleted = deletePerson(inputID);
-    if(!deleted){
-        cout << "You entered invalid ID. Please try again." << endl;
-        deleteUser();
-    }
-}
-
 void Library::addAdmin(){
     int role , inputID;
     Person* p = nullptr;
@@ -477,6 +453,29 @@ void Library::addAdmin(){
     toMenu();
 }
 
+void Library::deleteUser(){
+    viewAllUsers();
+    cout << "-----Delete an User-----" << endl;
+    string input;
+    int inputID;
+    bool deleted = false;
+    cout << "-------------------------" << endl;
+    cout << "Enter user's ID you want to remove (or \"quit\" to quit):" << endl;
+    cin >> input;
+    if(input == "quit"){
+        cout << "Backing to menu..." << endl;
+        toMenu();
+    }
+    else{
+        deleted = deletePerson(input);
+    }
+    if(!deleted){
+        cout << "You entered invalid ID. Please try again." << endl;
+        deleteUser();
+    }
+    toMenu();
+}
+
 void Library::deleteAdmin(){
     viewAllLibrarians();
     cout << "-----Delete an Admin-----" << endl;
@@ -490,11 +489,8 @@ void Library::deleteAdmin(){
         toMenu();
     }
     else{
-        istringstream iss(input);
-        iss >> inputID;
+        deleted = deletePerson(input);
     }
-    deleted = deletePerson(inputID);
-
     if(!deleted){
         cout << "You entered invalid ID. Please try again." << endl;
         deleteAdmin();
@@ -502,7 +498,10 @@ void Library::deleteAdmin(){
     toMenu();
 }
 
-bool Library::deletePerson(int inputID){
+bool Library::deletePerson(string input){
+    int inputID;
+    istringstream iss(input);
+    iss >> inputID;
     cout << "You entered: " << inputID << endl;
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getID() == inputID){
@@ -512,12 +511,19 @@ bool Library::deletePerson(int inputID){
                 personArr[j] = personArr[j+1];
             }
             personArrSize--;
-            if(personArr[i]->getRole() == "librarian")
+            if(personArr[i]->getRole() == "librarian"){
+                cout << "Librarian deleted!" << endl;
                 numLibrarian--;
-            else if(personArr[i]->getRole() == "faculty")
+            }
+            else if(personArr[i]->getRole() == "faculty"){
+                cout << "Faculty deleted!" << endl;
                 numFaculty--;
-            else if(personArr[i]->getRole() == "student")
+            }
+            else if(personArr[i]->getRole() == "student"){
+                cout << "Student deleted!" << endl;
                 numStudent--;
+            }
+
             return true;
         }
     }
