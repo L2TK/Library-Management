@@ -66,6 +66,8 @@ class Library{
         void setBookToNone(Book*);
         void payLateFee();
 
+        bool deletePerson(int );
+
     public:
         Library();
         void logIn();
@@ -398,7 +400,7 @@ void Library::deleteUser(){
     cout << "-----Delete an User-----" << endl;
     string input;
     int inputID;
-    bool found = false;
+    bool deleted = false;
     cout << "-------------------------" << endl;
     cout << "Enter user's ID you want to remove (or \"quit\" to quit):" << endl;
     cin >> input;
@@ -410,21 +412,8 @@ void Library::deleteUser(){
         istringstream iss(input);
         iss >> inputID;
     }
-    cout << "You entered: " << inputID << endl;
-    for(int i = 0; i < personArrSize; i++){
-        if(personArr[i]->getID() == inputID){
-            found = true;
-            delete personArr[i];
-            personArr[i] = nullptr;
-            for(int j = i; j < personArrSize; j++){
-                personArr[j] = personArr[j+1];
-            }
-            personArrSize--;
-            numLibrarian--;
-            toMenu();
-        }
-    }
-    if(!found){
+    deleted = deletePerson(inputID);
+    if(!deleted){
         cout << "You entered invalid ID. Please try again." << endl;
         deleteUser();
     }
@@ -493,7 +482,7 @@ void Library::deleteAdmin(){
     cout << "-----Delete an Admin-----" << endl;
     string input;
     int inputID;
-    bool found = false;
+    bool deleted = false;
     cout << "-------------------------" << endl;
     cout << "Enter librarian's ID you want to remove (or \"quit\" to quit):" << endl;
     cin >> input;
@@ -504,24 +493,35 @@ void Library::deleteAdmin(){
         istringstream iss(input);
         iss >> inputID;
     }
+    deleted = deletePerson(inputID);
+
+    if(!deleted){
+        cout << "You entered invalid ID. Please try again." << endl;
+        deleteAdmin();
+    }
+    toMenu();
+}
+
+bool Library::deletePerson(int inputID){
     cout << "You entered: " << inputID << endl;
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getID() == inputID){
-            found = true;
             delete personArr[i];
             personArr[i] = nullptr;
             for(int j = i; j < personArrSize - 1; j++){
                 personArr[j] = personArr[j+1];
             }
             personArrSize--;
-            numLibrarian--;
-            toMenu();
+            if(personArr[i]->getRole() == "librarian")
+                numLibrarian--;
+            else if(personArr[i]->getRole() == "faculty")
+                numFaculty--;
+            else if(personArr[i]->getRole() == "student")
+                numStudent--;
+            return true;
         }
     }
-    if(!found){
-        cout << "You entered invalid ID. Please try again." << endl;
-        deleteAdmin();
-    }
+    return false;
 }
 
 void Library::viewAllLibrarians(){
@@ -830,7 +830,7 @@ void Library::loadBooks(){
             }
             dateArr[2] = stoi(expirationDate);
             book1->expirationMonth = dateArr[0];
-            book1->expirationMonth = dateArr[1];
+            book1->expirationDay = dateArr[1];
             book1->expirationYear = dateArr[2];
         }
         bookArr[bookArrSize] = book1;
