@@ -118,108 +118,91 @@ void Library::toMenu(){
 
 void Library::supervisorExecuteMenu(){
     int choice =  userPtr->menu();
-    if(choice == 1){
-        addAdmin();
+    switch (choice){
+        case 1:
+            addAdmin();
+        case 2:
+            deleteAdmin();
+        case 3:
+            addUser();
+        case 4:
+            deleteUser();
+        case 5:
+            addBook();
+        case 6:
+            deleteBook();
+        case 7:
+            viewAllLibrarians();
+            toMenu();
+        case 8:
+            viewAllUsers();
+            toMenu();
+        case 9:
+            viewAllBooks();
+            toMenu();
+        case 10:
+            logOut();
+        default:
+            cout << "Invalid option. Please try again." << endl;
+            toMenu();
     }
-    else if(choice == 2){
-        deleteAdmin();
-    }
-    else if(choice == 3){
-        addUser();
-    }
-    else if(choice == 4){
-        deleteUser();
-    }
-    else if(choice == 5){
-        addBook();
-    }
-    else if(choice == 6){
-        deleteBook();
-    }
-    else if(choice == 7){
-        viewAllLibrarians();
-        toMenu();
-    }
-    else if(choice == 8){
-        viewAllUsers();
-        toMenu();
-    }
-    else if(choice == 9){
-        viewAllBooks();
-        toMenu();
-    }
-    else if(choice == 10){
-        logOut();
-    }
-    else{
-        cout << "Invalid option. Please try again." << endl;
-    }
-    toMenu();
 }
 
 void Library::librarianExecuteMenu(){
     int choice =  userPtr->menu();
-    if(choice == 1){
-        addUser();
+    switch(choice){
+        case 1:
+            addUser();
+        case 2:
+            deleteUser();
+        case 3:
+            addBook();
+        case 4:
+            deleteBook();
+        case 5: 
+            viewAllUsers();
+            system("Pause");
+            break;
+        case 6:
+            viewAllBooks();
+            system("Pause");
+            break;
+        case 7:
+            logOut();
+        default:
+            cout << "Invalid option. Please try again." << endl;
+            librarianExecuteMenu();
     }
-    else if(choice == 2){
-        deleteUser();
-    }
-    else if(choice == 3){
-        addBook();
-    }
-    else if(choice == 4){
-        deleteBook();
-    }
-    else if(choice == 5){
-        viewAllUsers();
-        toMenu();
-    }
-    else if(choice == 6){
-        viewAllBooks();
-        toMenu();
-    }
-    else if(choice == 7){
-        logOut();
-    }
-    else{
-        cout << "Invalid option. Please try again." << endl;
-    }
-    librarianExecuteMenu();
 }
 
 void Library::userExecuteMenu(){
     int choice =  userPtr->menu();
-    if(choice == 1){
-        borrowBook();
+    switch(choice){
+        case 1:
+            borrowBook();
+        case 2:
+            returnBook();
+        case 3:
+            viewAllAvailableBooks();
+            toMenu();
+        case 4:
+            userPtr->viewBorrowingBooks();
+            system("Pause");
+            toMenu();
+        
+        case 5:
+            userPtr->viewLateFee();
+            system("Pause");
+            toMenu();
+        case 6:
+            payLateFee();
+        case 7:
+            logOut();
+        default:
+            cout << "Invalid option. Please try again." << endl;
+            userExecuteMenu();
     }
-    else if(choice == 2){
-        returnBook();
-    }
-    else if(choice == 3){
-        viewAllAvailableBooks();
-        toMenu();
-    }
-    else if(choice == 4){
-        userPtr->viewBorrowingBooks();
-        system("Pause");
-        toMenu();
-    }
-    else if(choice == 5){
-        userPtr->viewLateFee();
-        system("Pause");
-        toMenu();
-    }
-    else if(choice == 6){
-        payLateFee();
-    }
-    else if(choice == 7){
-        logOut();
-    }
-    else{
-        cout << "Invalid option. Please try again." << endl;
-    }
-    userExecuteMenu();
+    
 }
 
 void Library::borrowBook(){
@@ -523,7 +506,6 @@ bool Library::deletePerson(string input){
                 cout << "Student deleted!" << endl;
                 numStudent--;
             }
-
             return true;
         }
     }
