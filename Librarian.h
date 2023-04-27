@@ -34,5 +34,5 @@ void Librarian::printInfo() const {
 }
 
 Librarian::~Librarian(){
-    cout << "Librarian deleted." << endl;
+    cout << "Librarian deleted!" << endl;
 }

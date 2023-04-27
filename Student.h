@@ -40,5 +40,5 @@ void Student::printInfo() const{
 }
 
 Student::~Student(){
-    cout << "Student deleted." << endl;
+    cout << "Student deleted!" << endl;
 }

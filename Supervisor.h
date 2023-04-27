@@ -41,5 +41,5 @@ void Supervisor::printInfo() const {
 }
 
 Supervisor::~Supervisor(){
-    cout << "Supervisor deleted." << endl;
+    cout << "Supervisor deleted!" << endl;
 }

@@ -68,9 +68,6 @@ class Library{
 
         bool deletePerson(string );
 
-    public:
-        Library();
-        void logIn();
         string logInMenu();
 
         void loadPerson();
@@ -78,6 +75,11 @@ class Library{
 
         void savePerson();
         void saveBooks();
+
+    public:
+        Library();
+        void logIn();
+        
 };
 
 Library::Library(){
@@ -162,11 +164,11 @@ void Library::librarianExecuteMenu(){
         case 5: 
             viewAllUsers();
             system("Pause");
-            break;
+            toMenu();
         case 6:
             viewAllBooks();
             system("Pause");
-            break;
+            toMenu();
         case 7:
             logOut();
         default:
@@ -189,7 +191,6 @@ void Library::userExecuteMenu(){
             userPtr->viewBorrowingBooks();
             system("Pause");
             toMenu();
-        
         case 5:
             userPtr->viewLateFee();
             system("Pause");
@@ -235,6 +236,21 @@ void Library::borrowBook(){
             bookArr[i]->expirationDay = bookArr[i]->startDay;
             bookArr[i]->expirationMonth = bookArr[i]->startMonth + 1;
             bookArr[i]->expirationYear = bookArr[i]->startYear;
+            if(bookArr[i]->expirationDay == 31){
+                if(bookArr[i]->expirationMonth == 4 || bookArr[i]->expirationMonth == 6 ||
+                    bookArr[i]->expirationMonth == 9 || bookArr[i]->expirationMonth == 11){
+                        bookArr[i]->expirationDay = 30;
+                }
+            }
+            if(bookArr[i]->expirationMonth == 2 && bookArr[i]->expirationDay > 28){
+                if(bookArr[i]->expirationYear % 4 == 0){
+                    bookArr[i]->expirationDay == 29;
+                }
+                else{
+                    bookArr[i]->expirationDay == 28;
+                }
+            }
+        
             bookArr[i]->overdueCharge = 0;
             userPtr->borrowBook(bookArr[i]);
             cout << "Proceed done!" << endl;
@@ -488,24 +504,22 @@ bool Library::deletePerson(string input){
     cout << "You entered: " << inputID << endl;
     for(int i = 0; i < personArrSize; i++){
         if(personArr[i]->getID() == inputID){
+            if(personArr[i]->getRole() == "librarian"){
+                numLibrarian--;
+            }
+            else if(personArr[i]->getRole() == "faculty"){
+                numFaculty--;
+            }
+            else if(personArr[i]->getRole() == "student"){
+                numStudent--;
+            }
             delete personArr[i];
             personArr[i] = nullptr;
             for(int j = i; j < personArrSize - 1; j++){
                 personArr[j] = personArr[j+1];
             }
             personArrSize--;
-            if(personArr[i]->getRole() == "librarian"){
-                cout << "Librarian deleted!" << endl;
-                numLibrarian--;
-            }
-            else if(personArr[i]->getRole() == "faculty"){
-                cout << "Faculty deleted!" << endl;
-                numFaculty--;
-            }
-            else if(personArr[i]->getRole() == "student"){
-                cout << "Student deleted!" << endl;
-                numStudent--;
-            }
+            
             return true;
         }
     }
@@ -571,6 +585,8 @@ void Library::viewAllBooks(){
 }
 
 void Library::logIn(){
+    loadBooks();
+    loadPerson();
     string role;
     string username, password;
     role = logInMenu();
@@ -808,6 +824,7 @@ void Library::loadBooks(){
             book1->startMonth = dateArr[0];
             book1->startDay = dateArr[1];
             book1->startYear = dateArr[2];
+
             i = 0;
             position = 0;
             while(expirationDate.find("-", 0) != string::npos){
@@ -820,6 +837,11 @@ void Library::loadBooks(){
             book1->expirationMonth = dateArr[0];
             book1->expirationDay = dateArr[1];
             book1->expirationYear = dateArr[2];
+
+        }
+        if(book1->expirationMonth - currentMonth > 0 && book1->expirationYear == currentYear){
+            int lateFee = (book1->expirationMonth -currentMonth) * 50;
+            book1->overdueCharge = lateFee;
         }
         bookArr[bookArrSize] = book1;
         bookArrSize++;

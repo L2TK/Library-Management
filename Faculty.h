@@ -39,5 +39,5 @@ void Faculty::printInfo() const{
 }
 
 Faculty::~Faculty(){
-    cout << "Faculty deleted." << endl;
+    cout << "Faculty deleted!" << endl;
 }

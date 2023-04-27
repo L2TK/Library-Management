@@ -7,8 +7,6 @@ using namespace std;
 
 int main(){
     Library l1;
-    l1.loadBooks();
-    l1.loadPerson();
 
     l1.logIn();
     return 0;
