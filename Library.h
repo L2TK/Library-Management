@@ -587,6 +587,8 @@ void Library::viewAllBooks(){
 void Library::logIn(){
     loadBooks();
     loadPerson();
+    saveBooks();
+    savePerson();
     string role;
     string username, password;
     role = logInMenu();
@@ -838,11 +840,12 @@ void Library::loadBooks(){
             book1->expirationDay = dateArr[1];
             book1->expirationYear = dateArr[2];
 
+            int yearDiff = currentYear - book1->expirationYear;
+            int monthDiff = currentMonth + (12 * yearDiff) - book1->expirationMonth;
+            book1->overdueCharge = monthDiff * 50;
         }
-        if(book1->expirationMonth - currentMonth > 0 && book1->expirationYear == currentYear){
-            int lateFee = (book1->expirationMonth -currentMonth) * 50;
-            book1->overdueCharge = lateFee;
-        }
+
+        
         bookArr[bookArrSize] = book1;
         bookArrSize++;
     }

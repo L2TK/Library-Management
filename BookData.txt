@@ -6,7 +6,7 @@ Boomsbury
 Sam X. Red
 1-11-2023
 2-11-2023
-0
+100
 
 A2
 To Kill a Mockingbird
@@ -36,7 +36,7 @@ T. Egerton, Whitehall
 Johnny K. Brown
 12-11-2022
 1-11-2023
-0
+150
 
 A5
 The Great Gatsby
@@ -45,7 +45,7 @@ Charles Scribner's Sons
 1925
 Johnny K. Brown
 3-30-2023
-0-0-2023
+4-30-2023
 0
 
 A6
@@ -54,9 +54,9 @@ Virginia Woolf
 Hogarth Press
 1927
 Monkey D. Luffy
-2-11-2023
-3-11-2023
-10
+2-11-2022
+3-11-2022
+650
 
 A7
 The Hobbit
@@ -66,7 +66,7 @@ George Allen & Unwin
 Monkey D. Luffy
 1-10-2023
 2-10-2023
-50
+100
 
 A8
 The Picture of Dorian Gray
