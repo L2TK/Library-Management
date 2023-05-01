@@ -24,10 +24,10 @@ int currentDay = now->tm_mday; // day of the month [1-31]
 
 class Library{
     private:
-        Person** personArr;
-        Book** bookArr;
+        Person** personArr; //array to store Person object using polymorphism
+        Book** bookArr; //array to store book 
 
-        Person* userPtr;
+        Person* userPtr; //pointer for log in and execute function based on type of object
 
         int numSupervisor;
         int numLibrarian;
@@ -37,44 +37,44 @@ class Library{
         int personArrSize;
         int bookArrSize;
 
-        Person* isValidMem(string, string, string);
+        Person* isValidMem(string, string, string); //check log in info and return userPtr if correct
 
-        void supervisorExecuteMenu();
-        void librarianExecuteMenu();
-        void userExecuteMenu();
+        void supervisorExecuteMenu(); //execute menu for supervisor 
+        void librarianExecuteMenu(); //execute menu for librarian
+        void userExecuteMenu(); //execute menu for user (student and faculty have the same menu)
 
-        void addAdmin();
-        void deleteAdmin();
+        void addAdmin(); //add new supervisor/librarian to person array
+        void deleteAdmin();  //delete new supervisor/librarian from Person array
 
-        void addUser();
-        void deleteUser();
+        void addUser(); //add new faculty/student to person array
+        void deleteUser(); //delete faculty/student from person array
 
-        void addBook();
-        void deleteBook();
+        void addBook(); //add new book to books array
+        void deleteBook(); //delete a book from books array
 
         void viewAllLibrarians();
         void viewAllUsers();
         void viewAllBooks();
         void viewAllAvailableBooks();
 
-        void borrowBook();
-        void returnBook();
+        void borrowBook(); //borrow books (only applied for faculty/student objects)
+        void returnBook(); //return books (only applied for faculty/student objects)
 
-        void toMenu();
+        void toMenu(); //return to different menu specified by userPtr’s role, load, and save data
         void logOut();
 
-        void setBookToNone(Book*);
+        void setBookToNone(Book*); //set book to none
         void payLateFee();
 
         bool deletePerson(string );
 
         string logInMenu();
 
-        void loadPerson();
-        void loadBooks();
+        void loadPerson();   //load members' info from person’s data file
+        void loadBooks(); //books' info from books’ data  file
 
-        void savePerson();
-        void saveBooks();
+        void savePerson(); //save member s' info to person’s data file
+        void saveBooks(); //save books’ info to books’ data file
 
     public:
         Library();
@@ -209,12 +209,14 @@ void Library::userExecuteMenu(){
 void Library::borrowBook(){
     string index;
     if(userPtr->getAvailableSlot() == 0){
-        cout << "Your slot is full. You can\'t borrow more books. Return books if you want to borrow more." << endl;
+        cout << "Your slot is full. You can\'t borrow more books." <<
+                "Return books if you want to borrow more." << endl;
         system("Pause");
         toMenu();
     }
     if(userPtr->getLateFee() != 0){
-        cout << "You have late fee that must be paid. Please pay late fee before borrowing another book." << endl;
+        cout << "You have late fee that must be paid. " << 
+                "Please pay late fee before borrowing another book." << endl;
         system("Pause");
         toMenu();
     }
@@ -232,7 +234,6 @@ void Library::borrowBook(){
             bookArr[i]->startDay = currentDay;
             bookArr[i]->startMonth = currentMonth;
             bookArr[i]->startYear = currentYear;
-
             bookArr[i]->expirationDay = bookArr[i]->startDay;
             bookArr[i]->expirationMonth = bookArr[i]->startMonth + 1;
             bookArr[i]->expirationYear = bookArr[i]->startYear;
@@ -250,13 +251,11 @@ void Library::borrowBook(){
                     bookArr[i]->expirationDay == 28;
                 }
             }
-        
             bookArr[i]->overdueCharge = 0;
             userPtr->borrowBook(bookArr[i]);
             cout << "Proceed done!" << endl;
             toMenu();
         }
-        
     }
     cout << "Invalid index. Please try again." << endl;
     borrowBook();
@@ -587,8 +586,6 @@ void Library::viewAllBooks(){
 void Library::logIn(){
     loadBooks();
     loadPerson();
-    saveBooks();
-    savePerson();
     string role;
     string username, password;
     role = logInMenu();

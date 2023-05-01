@@ -54,9 +54,9 @@ Virginia Woolf
 Hogarth Press
 1927
 Monkey D. Luffy
-2-11-2022
-3-11-2022
-650
+4-30-2023
+5-30-2023
+-50
 
 A7
 The Hobbit
@@ -113,8 +113,8 @@ ty
 ty
 ty
 12
-none
-0-0-0
-0-0-0
+asd asd asd
+4-30-2023
+5-30-2023
 0
 

@@ -9,7 +9,7 @@ public:
         availableSlot = 15;
     }
     string getRole() const override{ return "faculty"; }
-    int menu() override;
+    int menu() override;  //print menu for user, get and return choice
     void printInfo() const override;
     ~Faculty();
 };

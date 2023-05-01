@@ -5,7 +5,7 @@ public:
     Librarian():Person(){}
     ~Librarian();
     string getRole() const override {return "librarian"; }
-    int menu() override;
+    int menu() override; //print menu for librarian, get, and return user’s choice
     void printInfo() const override;
 };
 

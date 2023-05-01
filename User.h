@@ -3,7 +3,7 @@
 
 class User: public Person{
 protected:
-    Book** booksBorrowed;
+    Book** booksBorrowed; ; //array of borrowed books
     int numBooksBorrowed;
     int lateFee;
     int availableSlot;
@@ -12,17 +12,17 @@ protected:
 
 public:
     User();
-    void setLateFee(int _lateFee) override{ lateFee = _lateFee; }
+    void setLateFee(int _lateFee) override{ lateFee = _lateFee; } //set late fee
     void setMaxNumBooks(int o){ maxNumBooks = o; }
 
-    int getLateFee() override { return lateFee; }
+    int getLateFee() override { return lateFee; } 
 
-    int getAvailableSlot()override{ return availableSlot; }
+    int getAvailableSlot()override{ return availableSlot; } //return number of available slots
     int getNumBookBorrowed()override{ return numBooksBorrowed; }
     void setNumBooksBorrowed(int ) override;
     Book** getBookBorrowed() override{ return booksBorrowed; }
-    virtual string getRole() const = 0;
-    void printInfo() const override;
+    virtual string getRole() const = 0; //pure virtual function that is overridden in Faculty and Student
+    void printInfo() const override; //print info of user such as name, number of books
 
     void viewBorrowingBooks() override;
     void borrowBook(Book*) override;

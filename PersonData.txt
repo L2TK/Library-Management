@@ -70,7 +70,8 @@ asd
 asd
 asd
 asd
-0
+1
+ty
 
 student
 qwe

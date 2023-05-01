@@ -14,10 +14,12 @@ protected:
     string dateOfBirth;
 public:
     Person();
+    //getters and setters of person info
     string getFirstName(){ return firstName; }
     string getMiddleName(){ return middleName; }
     string getLastName(){ return lastName; }
-    string getFullName(){ return firstName + " " + middleName + " " + lastName; }
+    string getFullName(){ return firstName + " " + 
+                        middleName + " " + lastName; }
     string getDateOfBirth(){ return dateOfBirth; }
     string getUsername(){ return username; }
     string getPassword(){ return password; }
@@ -30,10 +32,10 @@ public:
     void setUsername(string _username){ username = _username; }
     void setPassword(string _password){ password = _password; }
     void setID(int _ID){ ID = _ID; }
-
+    //virtual getter and sett of user late fee, books borrowing, and available slot (overriden by class User)
     virtual void setLateFee(int ){}
-    virtual int getLateFee(){ return 0; };
-    virtual void setNumBooksBorrowed(int ){};
+    virtual int getLateFee(){ return 0; }; //return late fee (used for user class)
+    virtual void setNumBooksBorrowed(int ){}; //set num books b (used for user class)
     virtual int getAvailableSlot(){ return 0; };
     virtual Book** getBookBorrowed(){ return nullptr; };
     virtual int getNumBookBorrowed(){ return 0; };
@@ -44,9 +46,10 @@ public:
     virtual void viewLateFee(){};
 
     virtual ~Person(){}
-    virtual string getRole() const = 0;
-    virtual int menu() = 0;
-    virtual void printInfo() const;
+    //virtual functions that will be override by all derived class
+    virtual string getRole() const = 0; //pure virtual function to return role of each person
+    virtual int menu() = 0; //pure virtual function to return different menu for different role
+    virtual void printInfo() const; //pure virtual function to return person info, user will have more info
 
 };
 

@@ -10,7 +10,7 @@ public:
     ~Supervisor();
     string getRole() const override {return "supervisor"; }
     void printInfo() const override;
-    int menu() override;
+    int menu() override;  //print menu for supervisor, get, and return user’s choice
 };
 
 int Supervisor::menu(){

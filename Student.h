@@ -10,7 +10,7 @@ public:
     }
     ~Student();
     string getRole() const override{ return "student";}
-    int menu() override;
+    int menu() override; //print menu for user, get, and return choice
     void printInfo() const override;
     
 };
