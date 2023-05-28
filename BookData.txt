@@ -6,7 +6,7 @@ Boomsbury
 Sam X. Red
 1-11-2023
 2-11-2023
-100
+150
 
 A2
 To Kill a Mockingbird
@@ -16,7 +16,7 @@ J.B. Lippincott & Co.
 Sam X. Red
 2-30-2023
 3-30-2023
-50
+100
 
 A3
 1984
@@ -26,7 +26,7 @@ Secker and Warburg
 Johnny K. Brown
 3-7-2023
 4-7-2023
-0
+50
 
 A4
 Pride and Prejudice
@@ -36,7 +36,7 @@ T. Egerton, Whitehall
 Johnny K. Brown
 12-11-2022
 1-11-2023
-150
+200
 
 A5
 The Great Gatsby
@@ -46,7 +46,7 @@ Charles Scribner's Sons
 Johnny K. Brown
 3-30-2023
 4-30-2023
-0
+50
 
 A6
 To the Lighthouse
@@ -56,7 +56,7 @@ Hogarth Press
 Monkey D. Luffy
 4-30-2023
 5-30-2023
--50
+0
 
 A7
 The Hobbit
@@ -66,7 +66,7 @@ George Allen & Unwin
 Monkey D. Luffy
 1-10-2023
 2-10-2023
-100
+150
 
 A8
 The Picture of Dorian Gray
